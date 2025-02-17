@@ -5,7 +5,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>webcredentials:bucket-62v1r6.s3.eu-central-1.amazonaws.com</string>
-		<string>applinks:bucket-62v1r6.s3.eu-central-1.amazonaws.com</string>
+		<string>applinks:bucket-62v1r6.s3.eu-central-1.amazonaws.com?mode=developer</string>
 	</array>
 </dict>
 </plist>
