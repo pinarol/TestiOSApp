@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject private var model: Model
+
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -21,4 +23,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(Model(email: "pinar@example.com"))
 }
