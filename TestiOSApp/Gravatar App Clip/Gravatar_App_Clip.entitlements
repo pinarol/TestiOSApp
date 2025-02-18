@@ -4,8 +4,8 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>webcredentials:d3v9a2uxvvmw8x.cloudfront.net</string>
-		<string>appclips:d3v9a2uxvvmw8x.cloudfront.net</string>
+		<string>webcredentials:pinarslightsaildomain.com</string>
+		<string>appclips:pinarslightsaildomain.com</string>
 	</array>
 	<key>com.apple.developer.parent-application-identifiers</key>
 	<array>
