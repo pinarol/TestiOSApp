@@ -63,7 +63,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		915416572D62389600E72223 /* TestiOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestiOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		915416572D62389600E72223 /* Gravatar Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravatar Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		915416672D62389700E72223 /* TestiOSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestiOSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		915416712D62389700E72223 /* TestiOSAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestiOSAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		915416882D632CCE00E72223 /* Gravatar App Clip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravatar App Clip.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,7 +179,7 @@
 		915416582D62389600E72223 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				915416572D62389600E72223 /* TestiOSApp.app */,
+				915416572D62389600E72223 /* Gravatar Test.app */,
 				915416672D62389700E72223 /* TestiOSAppTests.xctest */,
 				915416712D62389700E72223 /* TestiOSAppUITests.xctest */,
 				915416882D632CCE00E72223 /* Gravatar App Clip.app */,
@@ -192,9 +192,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		915416562D62389600E72223 /* TestiOSApp */ = {
+		915416562D62389600E72223 /* Gravatar Test */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9154167B2D62389700E72223 /* Build configuration list for PBXNativeTarget "TestiOSApp" */;
+			buildConfigurationList = 9154167B2D62389700E72223 /* Build configuration list for PBXNativeTarget "Gravatar Test" */;
 			buildPhases = (
 				915416532D62389600E72223 /* Sources */,
 				915416542D62389600E72223 /* Frameworks */,
@@ -209,11 +209,11 @@
 			fileSystemSynchronizedGroups = (
 				915416592D62389600E72223 /* TestiOSApp */,
 			);
-			name = TestiOSApp;
+			name = "Gravatar Test";
 			packageProductDependencies = (
 			);
 			productName = TestiOSApp;
-			productReference = 915416572D62389600E72223 /* TestiOSApp.app */;
+			productReference = 915416572D62389600E72223 /* Gravatar Test.app */;
 			productType = "com.apple.product-type.application";
 		};
 		915416662D62389700E72223 /* TestiOSAppTests */ = {
@@ -378,7 +378,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				915416562D62389600E72223 /* TestiOSApp */,
+				915416562D62389600E72223 /* Gravatar Test */,
 				915416662D62389700E72223 /* TestiOSAppTests */,
 				915416702D62389700E72223 /* TestiOSAppUITests */,
 				915416872D632CCE00E72223 /* Gravatar App Clip */,
@@ -481,12 +481,12 @@
 /* Begin PBXTargetDependency section */
 		915416692D62389700E72223 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 915416562D62389600E72223 /* TestiOSApp */;
+			target = 915416562D62389600E72223 /* Gravatar Test */;
 			targetProxy = 915416682D62389700E72223 /* PBXContainerItemProxy */;
 		};
 		915416732D62389700E72223 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 915416562D62389600E72223 /* TestiOSApp */;
+			target = 915416562D62389600E72223 /* Gravatar Test */;
 			targetProxy = 915416722D62389700E72223 /* PBXContainerItemProxy */;
 		};
 		9154169B2D632CCF00E72223 /* PBXTargetDependency */ = {
@@ -920,7 +920,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9154167B2D62389700E72223 /* Build configuration list for PBXNativeTarget "TestiOSApp" */ = {
+		9154167B2D62389700E72223 /* Build configuration list for PBXNativeTarget "Gravatar Test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9154167C2D62389700E72223 /* Debug */,

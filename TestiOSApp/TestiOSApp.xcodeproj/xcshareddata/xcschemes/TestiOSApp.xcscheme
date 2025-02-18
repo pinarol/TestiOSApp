@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "915416562D62389600E72223"
-               BuildableName = "TestiOSApp.app"
-               BlueprintName = "TestiOSApp"
+               BuildableName = "Gravatar Test.app"
+               BlueprintName = "Gravatar Test"
                ReferencedContainer = "container:TestiOSApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -69,8 +69,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "915416562D62389600E72223"
-            BuildableName = "TestiOSApp.app"
-            BlueprintName = "TestiOSApp"
+            BuildableName = "Gravatar Test.app"
+            BlueprintName = "Gravatar Test"
             ReferencedContainer = "container:TestiOSApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -86,8 +86,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "915416562D62389600E72223"
-            BuildableName = "TestiOSApp.app"
-            BlueprintName = "TestiOSApp"
+            BuildableName = "Gravatar Test.app"
+            BlueprintName = "Gravatar Test"
             ReferencedContainer = "container:TestiOSApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
