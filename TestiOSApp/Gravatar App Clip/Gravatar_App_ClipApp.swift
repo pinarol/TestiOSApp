@@ -19,7 +19,7 @@ struct Gravatar_App_ClipApp: App {
                     guard let incomingURL = activity.webpageURL,
                           let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true) else { return }
                     // direct to the linked content
-                    if components.path?.starts(with: "/iosdemo/create-avatar") == true {
+                    if components.path?.starts(with: "/avatar") == true {
                         model.email = components.queryItems?.first(where: { $0.name == "email" })?.value
                     }
                 }
