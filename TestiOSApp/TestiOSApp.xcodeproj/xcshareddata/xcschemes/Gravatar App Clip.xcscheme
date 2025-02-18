@@ -56,7 +56,7 @@
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
-      appClipInvocationURLString = "https://bucket-62v1r6.s3.eu-central-1.amazonaws.com/iosdemo/create-avatar?email=pinarolguc@gmail.com"
+      appClipInvocationURLString = "https://d3v9a2uxvvmw8x.cloudfront.net/iosdemo/create-avatar?email=pinar@gmail.com"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -78,14 +78,14 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCAppClipURL"
-            value = "https://bucket-62v1r6.s3.eu-central-1.amazonaws.com/iosdemo/create-avatar?email=pinarolguc@gmail.com"
+            value = "https://d3v9a2uxvvmw8x.cloudfront.net/iosdemo/create-avatar?email=pinar@gmail.com"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
-      appClipInvocationURLString = "https://bucket-62v1r6.s3.eu-central-1.amazonaws.com/iosdemo/create-avatar?email=pinarolguc@gmail.com"
+      appClipInvocationURLString = "https://d3v9a2uxvvmw8x.cloudfront.net/iosdemo/create-avatar?email=pinar@gmail.com"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"

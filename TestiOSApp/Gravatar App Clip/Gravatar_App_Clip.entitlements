@@ -4,8 +4,8 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>webcredentials:bucket-62v1r6.s3.eu-central-1.amazonaws.com</string>
-		<string>appclips:bucket-62v1r6.s3.eu-central-1.amazonaws.com</string>
+		<string>webcredentials:d3v9a2uxvvmw8x.cloudfront.net</string>
+		<string>appclips:d3v9a2uxvvmw8x.cloudfront.net</string>
 	</array>
 	<key>com.apple.developer.parent-application-identifiers</key>
 	<array>

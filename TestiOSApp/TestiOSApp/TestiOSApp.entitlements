@@ -4,8 +4,8 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>webcredentials:bucket-62v1r6.s3.eu-central-1.amazonaws.com</string>
-		<string>applinks:bucket-62v1r6.s3.eu-central-1.amazonaws.com?mode=developer</string>
+		<string>webcredentials:d3v9a2uxvvmw8x.cloudfront.net</string>
+		<string>applinks:d3v9a2uxvvmw8x.cloudfront.net?mode=developer</string>
 	</array>
 </dict>
 </plist>
