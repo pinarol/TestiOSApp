@@ -6,16 +6,20 @@
 //
 
 import SwiftUI
+import CanvasEditor
 
 struct ContentView: View {
+    @State private var selectedImage: UIImage?
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        //VStack {
+            CanvasEditorView(inputImage: nil) { image in
+                selectedImage = image
+            } onCancel: {
+                
+            }
+            .ignoresSafeArea(.all)
+        //}
+        //.padding()
     }
 }
 

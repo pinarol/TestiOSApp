@@ -38,6 +38,17 @@ struct ImageTemplate: Identifiable, Hashable {
         return withUpdating(template: CanvasLayers(layers: newLayers))
     }
 
+    func withUpdatingPersonLayerWith(isPlaceholder: Bool) -> ImageTemplate {
+        let newLayers = template.layers.map { layer in
+            if layer.type == .person {
+                layer.copyOverriding(isPlaceholder: isPlaceholder)
+            } else {
+                layer
+            }
+        }
+        return withUpdating(template: CanvasLayers(layers: newLayers))
+    }
+
     func withUpdatingPersonsPreviousLayer(with kind: CanvasLayer.Kind) -> ImageTemplate {
         guard let index = (template.layers.firstIndex { $0.type == .person }) else {
             return self

@@ -14,8 +14,15 @@ public class CanvasViewController: UIViewController {
     private lazy var personSegmentationModel = PersonSegmentationModel()
     private lazy var templatesViewModel = TemplatesViewModel(originalImage: inputImage)
 
-    let inputImage: UIImage
-    let inputImageID = UUID().uuidString
+    var inputImage: UIImage? {
+        didSet {
+            inputImageID = UUID().uuidString
+            doSegmentation()
+            cutoutButton.isHidden = inputImage == nil
+        }
+    }
+
+    var inputImageID = UUID().uuidString
     var onCompletion: ((UIImage) -> Void)?
     var onCancel: (() -> Void)?
     private var cancellables = Set<AnyCancellable>()
@@ -45,7 +52,7 @@ public class CanvasViewController: UIViewController {
         return button
     }()
 
-    public init(inputImage: UIImage, onCompletion: ((UIImage) -> Void)?, onCancel: (() -> Void)?) {
+    public init(inputImage: UIImage?, onCompletion: ((UIImage) -> Void)?, onCancel: (() -> Void)?) {
         self.inputImage = inputImage
         self.onCancel = onCancel
         self.onCompletion = onCompletion
@@ -64,6 +71,11 @@ public class CanvasViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         listenForUpdates()
+        doSegmentation()
+    }
+    
+    func doSegmentation() {
+        guard let inputImage else { return }
         Task {
             do {
                 self.segmentationType = await personSegmentationModel.suggestedSegmentationType(for: inputImage, cacheKey: inputImageID)
@@ -82,7 +94,7 @@ public class CanvasViewController: UIViewController {
         .store(in: &cancellables)
 
         templatesViewModel.$selectedTemplateIndex.sink { [weak self] index in
-            guard let self else { return }
+            guard let self, index < self.templatesViewModel.templates.count else { return }
             let template = self.templatesViewModel.templates[index]
             self.canvasView.removeAllSubviews()
             canvasView.addLayers(template.template, personImage: template.image)
@@ -98,6 +110,7 @@ public class CanvasViewController: UIViewController {
 
     @objc
     func cutoutButtonTapped() {
+        guard let inputImage else { return }
         let controller = UIHostingController(
             rootView: SegmentationView(
                 segmentationType: segmentationType,
@@ -124,6 +137,8 @@ public class CanvasViewController: UIViewController {
     }
 
     private func setupUI() {
+        cutoutButton.isHidden = inputImage == nil
+
         let hostingController = GridHostingViewController(swiftUIView: ImageTemplatesHorizontalGrid(templatesViewModel: templatesViewModel))
         addChild(hostingController)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false

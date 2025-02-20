@@ -7,8 +7,28 @@ import UIKit
 class TemplatesViewModel: ObservableObject {
     static let linearGradients = CanvasLayersParser.decodeLinearGradients()
 
-    let originalImage: UIImage
+    static let defaultImages: [UIImage] = {
+        [
+            UIImage(named: "p-01"),
+            UIImage(named: "p-02"),
+            UIImage(named: "p-03"),
+            UIImage(named: "p-04"),
+            UIImage(named: "p-05"),
+            UIImage(named: "p-06"),
+            UIImage(named: "p-07"),
+            UIImage(named: "p-08"),
+            UIImage(named: "p-09"),
+            UIImage(named: "p-10")
+        ].compactMap { $0 }
+    }()
+
+    static let defaultSegmentationResults: Array<SegmentationResult> = {
+        defaultImages.map { SegmentationResult(resultImage: $0, croppedResultImage: $0) }
+    }()
+    
     @MainActor @Published var segmentationResult: SegmentationResult?
+    @MainActor @Published var originalImage: UIImage?
+
     @MainActor @Published var templates: [ImageTemplate] = []
     @MainActor @Published var selectedTemplateIndex: Int = 0
     private var cancellables: Set<AnyCancellable> = []
@@ -17,21 +37,25 @@ class TemplatesViewModel: ObservableObject {
         return templates[selectedTemplateIndex]
     }
 
-    init(originalImage: UIImage) {
+    init(originalImage: UIImage?) {
         self.originalImage = originalImage
-        templates.append(contentsOf: originalImageDesigns(image: originalImage))
+        //templates.append(contentsOf: originalImageDesigns(image: originalImage))
+        var newTemplates: [ImageTemplate] = []
+        newTemplates.append(contentsOf: self.defaultTemplates())
+        self.templates = newTemplates
         listenSegmentationResultChange()
     }
 
     func listenSegmentationResultChange() {
-        $segmentationResult.sink { [weak self] result in
+        $segmentationResult.combineLatest($originalImage).sink { [weak self] (result, originalImage) in
             guard let self else { return }
             var newTemplates: [ImageTemplate] = []
-            if let result {
-                newTemplates.append(contentsOf: self.originalImageDesigns(image: self.originalImage))
+            if let result, let originalImage {
+                newTemplates.append(contentsOf: self.originalImageDesigns(image: originalImage))
                 newTemplates.append(contentsOf: self.templatesForMaskedImage(segmentationResult: result))
             } else {
-                newTemplates.append(contentsOf: self.originalImageDesigns(image: self.originalImage))
+                //newTemplates.append(contentsOf: self.originalImageDesigns(image: self.originalImage))
+                newTemplates.append(contentsOf: self.defaultTemplates())
             }
             withAnimation {
                 self.templates = newTemplates
@@ -53,6 +77,18 @@ class TemplatesViewModel: ObservableObject {
             frameBrush2HalfOpenDesigns(segmentationResult: segmentationResult) +
             //   backgroundHumanShapeBrushDesigns(segmentationResult: segmentationResult) +
             fullCircleFrameSplashOverlayDesigns(segmentationResult: segmentationResult)
+        return templates
+    }
+
+    private func defaultTemplates() -> [ImageTemplate] {
+        let templates =
+        fullCircleFrameDesignsWithDefaults() +
+        mediumCircleFrameHalfOpenDesignsDefaults() +
+        mediumRoundedRectFrameHalfOpenDesignsDefaults() +
+        backgroundCircleBrushDesignsDefaults() +
+        frameCircleBrushHalfOpenDesignsDefaults() +
+        frameBrush2HalfOpenDesignsDefaults() +
+        fullCircleFrameSplashOverlayDesignsDefaults()
         return templates
     }
 
@@ -89,6 +125,29 @@ class TemplatesViewModel: ObservableObject {
         return colorBackgroundTemplates + linearBackgroundTemplates
     }
 
+    func fullCircleFrameDesignsWithDefaults() -> [ImageTemplate] {
+        guard let template = TemplateDesign.fullCircleFrame.getLayers() else { return [] }
+        var index = 0
+        let colorBackgroundTemplates = HexBackgroundColors.colors[4 ... 7].map { color in
+            let imageTemplate = ImageTemplate(template: template,
+                                              segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .color(color))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        let linearBackgroundTemplates = Self.linearGradients[4 ... 7].map { gradient in
+            let imageTemplate = ImageTemplate(template: template,
+                                              segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+
+            index += 1
+            return imageTemplate
+        }
+        return colorBackgroundTemplates + linearBackgroundTemplates
+    }
+
     func fullCircleFrameImageBackgroundDesigns(segmentationResult: SegmentationResult) -> [ImageTemplate] {
         guard let template1 = TemplateDesign.fullCircleFrame.getLayers() else { return [] }
         guard let template2 = TemplateDesign.fullCircleFrameDoubleBackgrounds.getLayers() else { return [] }
@@ -111,6 +170,28 @@ class TemplatesViewModel: ObservableObject {
         return result
     }
 
+    func mediumCircleFrameHalfOpenDesignsDefaults() -> [ImageTemplate] {
+        guard let template = TemplateDesign.mediumCircleFrameHalfOpen.getLayers() else { return [] }
+        var index = 6
+        let colorBackgroundTemplates = HexBackgroundColors.colors[7 ... 9].map { color in
+            let imageTemplate = ImageTemplate(template: template,
+                                              segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .color(color))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        let linearBackgroundTemplates = Self.linearGradients[7 ... 10].map { gradient in
+            let imageTemplate = ImageTemplate(template: template,
+                                              segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        return colorBackgroundTemplates + linearBackgroundTemplates
+    }
+    
     func mediumCircleFrameHalfOpenDesigns(segmentationResult: SegmentationResult) -> [ImageTemplate] {
         guard let template = TemplateDesign.mediumCircleFrameHalfOpen.getLayers() else { return [] }
         let imageTemplate = ImageTemplate(template: template, segmentationResult: segmentationResult)
@@ -134,6 +215,50 @@ class TemplatesViewModel: ObservableObject {
         }
         return colorBackgroundTemplates + linearBackgroundTemplates
     }
+    
+    func mediumRoundedRectFrameHalfOpenDesignsDefaults() -> [ImageTemplate] {
+        guard let template = TemplateDesign.mediumRoundedRectFrameHalfOpen.getLayers() else { return [] }
+        var index = 0
+        let colorBackgroundTemplates = HexBackgroundColors.colors[6 ... 8].map { color in
+            let imageTemplate = ImageTemplate(template: template,
+                                              segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .color(color))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        let linearBackgroundTemplates = Self.linearGradients[10 ... 13].map { gradient in
+            let imageTemplate = ImageTemplate(template: template,
+                                              segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        return colorBackgroundTemplates + linearBackgroundTemplates
+    }
+
+    func backgroundCircleBrushDesignsDefaults() -> [ImageTemplate] {
+        var index = 0
+        guard let template = TemplateDesign.backgroundCircleBrush.getLayers() else { return [] }
+        let colorBackgroundTemplates = HexBackgroundColors.colors[8 ... 10].map { color in
+            let imageTemplate = ImageTemplate(template: template,
+                                              segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .color(color))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        let linearBackgroundTemplates = Self.linearGradients[11 ... 14].map { gradient in
+            let imageTemplate = ImageTemplate(template: template,
+                                              segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        return colorBackgroundTemplates + linearBackgroundTemplates
+    }
 
     func backgroundCircleBrushDesigns(segmentationResult: SegmentationResult) -> [ImageTemplate] {
         guard let template = TemplateDesign.backgroundCircleBrush.getLayers() else { return [] }
@@ -147,6 +272,26 @@ class TemplatesViewModel: ObservableObject {
         return colorBackgroundTemplates + linearBackgroundTemplates
     }
 
+    func frameCircleBrushHalfOpenDesignsDefaults() -> [ImageTemplate] {
+        var index = 0
+        guard let template = TemplateDesign.frameCircleBrushHalfOpen.getLayers() else { return [] }
+        let colorBackgroundTemplates = HexBackgroundColors.colors[2 ... 4].map { color in
+            let imageTemplate = ImageTemplate(template: template, segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .color(color))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        let linearBackgroundTemplates = Self.linearGradients[11 ... 14].map { gradient in
+            let imageTemplate = ImageTemplate(template: template, segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        return colorBackgroundTemplates + linearBackgroundTemplates
+    }
+
     func frameCircleBrushHalfOpenDesigns(segmentationResult: SegmentationResult) -> [ImageTemplate] {
         guard let template = TemplateDesign.frameCircleBrushHalfOpen.getLayers() else { return [] }
         let imageTemplate = ImageTemplate(template: template, segmentationResult: segmentationResult)
@@ -155,6 +300,26 @@ class TemplatesViewModel: ObservableObject {
         }
         let linearBackgroundTemplates = Self.linearGradients[11 ... 14].map { gradient in
             imageTemplate.withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+        }
+        return colorBackgroundTemplates + linearBackgroundTemplates
+    }
+
+    func frameBrush2HalfOpenDesignsDefaults() -> [ImageTemplate] {
+        var index = 0
+        guard let template = TemplateDesign.frameBrush2HalfOpen.getLayers() else { return [] }
+        let colorBackgroundTemplates = HexBackgroundColors.colors[6 ... 9].map { color in
+            let imageTemplate = ImageTemplate(template: template, segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .color(color))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        let linearBackgroundTemplates = Self.linearGradients[9 ... 15].map { gradient in
+            let imageTemplate = ImageTemplate(template: template, segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
         }
         return colorBackgroundTemplates + linearBackgroundTemplates
     }
@@ -198,6 +363,26 @@ class TemplatesViewModel: ObservableObject {
         }
         let linearBackgroundTemplates = Self.linearGradients[7 ... 11].map { gradient in
             imageTemplate.withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+        }
+        return colorBackgroundTemplates + linearBackgroundTemplates
+    }
+
+    func fullCircleFrameSplashOverlayDesignsDefaults() -> [ImageTemplate] {
+        var index = 0
+        guard let template = TemplateDesign.fullCircleFrameSplashOverlay.getLayers() else { return [] }
+        let colorBackgroundTemplates = HexBackgroundColors.colors[7 ... 9].map { color in
+            let imageTemplate = ImageTemplate(template: template, segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .color(color))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
+        }
+        let linearBackgroundTemplates = Self.linearGradients[7 ... 11].map { gradient in
+            let imageTemplate = ImageTemplate(template: template, segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
+                .withUpdatingLayer(atIndex: 0, with: .linearGradient(gradient))
+                .withUpdatingPersonLayerWith(isPlaceholder: true)
+            index += 1
+            return imageTemplate
         }
         return colorBackgroundTemplates + linearBackgroundTemplates
     }

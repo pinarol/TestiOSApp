@@ -28,6 +28,7 @@ struct CanvasLayer: Decodable, Hashable {
     let sizeType: SizeType
     let maskLayers: [MaskLayer]?
     let position: Position
+    let isPlaceholder: Bool
     var isCropped: Bool {
         switch kind {
         case .maskedImage(let cropped):
@@ -37,12 +38,13 @@ struct CanvasLayer: Decodable, Hashable {
         }
     }
 
-    init(type: LayerType, kind: Kind, sizeType: SizeType, position: Position, maskLayers: [MaskLayer]?) {
+    init(type: LayerType, kind: Kind, sizeType: SizeType, position: Position, maskLayers: [MaskLayer]?, isPlaceholder: Bool) {
         self.type = type
         self.kind = kind
         self.sizeType = sizeType
         self.position = position
         self.maskLayers = maskLayers
+        self.isPlaceholder = isPlaceholder
     }
 
     init(from decoder: Decoder) throws {
@@ -61,6 +63,7 @@ struct CanvasLayer: Decodable, Hashable {
         self.type = try container.decode(LayerType.self, forKey: .type)
         self.position = try container.decode(Position.self, forKey: .position)
         self.maskLayers = try container.decodeIfPresent([MaskLayer].self, forKey: .maskLayers)
+        self.isPlaceholder = try container.decodeIfPresent(Bool.self, forKey: .isPlaceholder) ?? false
         if let remoteImage = try container.decodeIfPresent(RemoteImage.self, forKey: .remoteImage) {
             kind = .remoteImage(remoteImage)
         } else if let imageName = try container.decodeIfPresent(String.self, forKey: .imageName) {
@@ -87,9 +90,10 @@ struct CanvasLayer: Decodable, Hashable {
         case color
         case size
         case position
+        case isPlaceholder
     }
 
-    func copyOverriding(kind newKind: Kind) -> CanvasLayer {
-        CanvasLayer(type: type, kind: newKind, sizeType: sizeType, position: position, maskLayers: maskLayers)
+    func copyOverriding(kind newKind: Kind? = nil, isPlaceholder newIsPlaceholder: Bool? = nil) -> CanvasLayer {
+        CanvasLayer(type: type, kind: newKind ?? kind, sizeType: sizeType, position: position, maskLayers: maskLayers, isPlaceholder: newIsPlaceholder ?? isPlaceholder)
     }
 }
