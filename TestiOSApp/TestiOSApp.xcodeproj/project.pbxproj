@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		915416AD2D632CCF00E72223 /* Gravatar App Clip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 915416882D632CCE00E72223 /* Gravatar App Clip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		91726B0E2D67216E00B8255C /* CanvasEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 91726B0D2D67216E00B8255C /* CanvasEditor */; };
+		91726B102D67217700B8255C /* Gravatar in Frameworks */ = {isa = PBXBuildFile; productRef = 91726B0F2D67217700B8255C /* Gravatar */; };
+		91726B122D67217700B8255C /* GravatarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 91726B112D67217700B8255C /* GravatarUI */; };
+		91726B142D6721A400B8255C /* CanvasEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 91726B132D6721A400B8255C /* CanvasEditor */; };
+		91726B162D6721A400B8255C /* Gravatar in Frameworks */ = {isa = PBXBuildFile; productRef = 91726B152D6721A400B8255C /* Gravatar */; };
+		91726B182D6721A400B8255C /* GravatarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 91726B172D6721A400B8255C /* GravatarUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +75,8 @@
 		915416882D632CCE00E72223 /* Gravatar App Clip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravatar App Clip.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		915416992D632CCF00E72223 /* Gravatar App ClipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Gravatar App ClipTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		915416A32D632CCF00E72223 /* Gravatar App ClipUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Gravatar App ClipUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		91726AE82D6720A200B8255C /* CanvasEditor */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CanvasEditor; path = ../CanvasEditor; sourceTree = SOURCE_ROOT; };
+		91726B0B2D6720FA00B8255C /* Gravatar-SDK-iOS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Gravatar-SDK-iOS"; path = "/Users/pinarolguc/Development/GravatarSDK-2/Gravatar-SDK-iOS"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -122,6 +130,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91726B182D6721A400B8255C /* GravatarUI in Frameworks */,
+				91726B162D6721A400B8255C /* Gravatar in Frameworks */,
+				91726B142D6721A400B8255C /* CanvasEditor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +154,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91726B122D67217700B8255C /* GravatarUI in Frameworks */,
+				91726B102D67217700B8255C /* Gravatar in Frameworks */,
+				91726B0E2D67216E00B8255C /* CanvasEditor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,12 +180,15 @@
 		9154164E2D62389600E72223 = {
 			isa = PBXGroup;
 			children = (
+				91726B0B2D6720FA00B8255C /* Gravatar-SDK-iOS */,
+				91726AE82D6720A200B8255C /* CanvasEditor */,
 				915416592D62389600E72223 /* TestiOSApp */,
 				9154166A2D62389700E72223 /* TestiOSAppTests */,
 				915416742D62389700E72223 /* TestiOSAppUITests */,
 				915416892D632CCE00E72223 /* Gravatar App Clip */,
 				9154169C2D632CCF00E72223 /* Gravatar App ClipTests */,
 				915416A62D632CCF00E72223 /* Gravatar App ClipUITests */,
+				91726B0C2D67216E00B8255C /* Frameworks */,
 				915416582D62389600E72223 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -187,6 +204,13 @@
 				915416A32D632CCF00E72223 /* Gravatar App ClipUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		91726B0C2D67216E00B8255C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,6 +235,9 @@
 			);
 			name = "Gravatar Test";
 			packageProductDependencies = (
+				91726B132D6721A400B8255C /* CanvasEditor */,
+				91726B152D6721A400B8255C /* Gravatar */,
+				91726B172D6721A400B8255C /* GravatarUI */,
 			);
 			productName = TestiOSApp;
 			productReference = 915416572D62389600E72223 /* Gravatar Test.app */;
@@ -279,6 +306,9 @@
 			);
 			name = "Gravatar App Clip";
 			packageProductDependencies = (
+				91726B0D2D67216E00B8255C /* CanvasEditor */,
+				91726B0F2D67217700B8255C /* Gravatar */,
+				91726B112D67217700B8255C /* GravatarUI */,
 			);
 			productName = "Gravatar App Clip";
 			productReference = 915416882D632CCE00E72223 /* Gravatar App Clip.app */;
@@ -975,6 +1005,33 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		91726B0D2D67216E00B8255C /* CanvasEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanvasEditor;
+		};
+		91726B0F2D67217700B8255C /* Gravatar */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Gravatar;
+		};
+		91726B112D67217700B8255C /* GravatarUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GravatarUI;
+		};
+		91726B132D6721A400B8255C /* CanvasEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanvasEditor;
+		};
+		91726B152D6721A400B8255C /* Gravatar */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Gravatar;
+		};
+		91726B172D6721A400B8255C /* GravatarUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GravatarUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9154164F2D62389600E72223 /* Project object */;
 }
