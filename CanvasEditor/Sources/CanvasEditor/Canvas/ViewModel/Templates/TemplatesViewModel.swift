@@ -127,7 +127,7 @@ class TemplatesViewModel: ObservableObject {
 
     func fullCircleFrameDesignsWithDefaults() -> [ImageTemplate] {
         guard let template = TemplateDesign.fullCircleFrame.getLayers() else { return [] }
-        var index = 0
+        var index = 4
         let colorBackgroundTemplates = HexBackgroundColors.colors[4 ... 7].map { color in
             let imageTemplate = ImageTemplate(template: template,
                                               segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
@@ -172,7 +172,7 @@ class TemplatesViewModel: ObservableObject {
 
     func mediumCircleFrameHalfOpenDesignsDefaults() -> [ImageTemplate] {
         guard let template = TemplateDesign.mediumCircleFrameHalfOpen.getLayers() else { return [] }
-        var index = 6
+        var index = 4
         let colorBackgroundTemplates = HexBackgroundColors.colors[7 ... 9].map { color in
             let imageTemplate = ImageTemplate(template: template,
                                               segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
@@ -239,7 +239,7 @@ class TemplatesViewModel: ObservableObject {
     }
 
     func backgroundCircleBrushDesignsDefaults() -> [ImageTemplate] {
-        var index = 0
+        var index = 4
         guard let template = TemplateDesign.backgroundCircleBrush.getLayers() else { return [] }
         let colorBackgroundTemplates = HexBackgroundColors.colors[8 ... 10].map { color in
             let imageTemplate = ImageTemplate(template: template,
@@ -368,7 +368,7 @@ class TemplatesViewModel: ObservableObject {
     }
 
     func fullCircleFrameSplashOverlayDesignsDefaults() -> [ImageTemplate] {
-        var index = 0
+        var index = 4
         guard let template = TemplateDesign.fullCircleFrameSplashOverlay.getLayers() else { return [] }
         let colorBackgroundTemplates = HexBackgroundColors.colors[7 ... 9].map { color in
             let imageTemplate = ImageTemplate(template: template, segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
