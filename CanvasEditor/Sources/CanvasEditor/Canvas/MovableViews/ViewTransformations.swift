@@ -1,8 +1,8 @@
 import Foundation
 import UIKit
 
-final class ViewTransformations: NSObject, NSSecureCoding {
-    static var supportsSecureCoding = true
+final class ViewTransformations: NSObject, @preconcurrency NSSecureCoding {
+    @MainActor static var supportsSecureCoding = true
 
     static let defaultPosition: CGPoint = .zero
     static let defaultScale: CGFloat = 1.0

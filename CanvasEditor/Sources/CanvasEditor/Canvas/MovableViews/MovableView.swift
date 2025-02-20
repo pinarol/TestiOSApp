@@ -45,7 +45,7 @@ private enum Constants {
 }
 
 /// A wrapper for UIViews that can be rotated, moved and scaled
-final class MovableView: UIView, NSSecureCoding {
+final class MovableView: UIView, @preconcurrency NSSecureCoding {
     static var supportsSecureCoding = true
 
     weak var delegate: MovableViewDelegate?

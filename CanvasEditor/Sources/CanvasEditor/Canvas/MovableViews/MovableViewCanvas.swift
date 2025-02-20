@@ -43,7 +43,7 @@ private enum Constants {
 
 /// View that contains the collection of movable views
 @MainActor
-final class MovableViewCanvas: IgnoreTouchesView, UIGestureRecognizerDelegate, MovableViewDelegate, NSSecureCoding {
+final class MovableViewCanvas: IgnoreTouchesView, UIGestureRecognizerDelegate, MovableViewDelegate, @preconcurrency NSSecureCoding {
     static var supportsSecureCoding = true
 
     weak var delegate: MovableViewCanvasDelegate?

@@ -20,15 +20,14 @@ struct ImageTemplatesHorizontalGrid: View {
                         borderColor: .accentColor,
                         borderWidth: templatesViewModel.selectedTemplate?.id == template.id ? 4 : 0
                     )
-                    .padding(.horizontal, .DS.Padding.single)
-                    .padding(.vertical, .DS.Padding.single)
+                    .padding(.horizontal, CGFloat.DS.Padding.single)
+                    .padding(.vertical, CGFloat.DS.Padding.single)
                 }
             }
         }
-        .padding(.horizontal, .DS.Padding.double)
-        .padding(.vertical, .DS.Padding.double)
+        .padding(.horizontal, CGFloat.DS.Padding.double)
+        .padding(.vertical, CGFloat.DS.Padding.double)
         .background(Color.black)
-        // .frame(maxWidth: .infinity, maxHeight: .infinity) // ✅ Important for UIKit embedding
     }
 }
 
