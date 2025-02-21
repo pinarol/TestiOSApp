@@ -58,8 +58,10 @@ class TemplatesViewModel: ObservableObject {
                 newTemplates.append(contentsOf: self.defaultTemplates())
             }
             withAnimation {
+                if self.templates.count == newTemplates.count {
+                    self.selectedTemplateIndex = self.selectedTemplateIndex // trigger update because the image has changed
+                }
                 self.templates = newTemplates
-                self.selectedTemplateIndex = self.selectedTemplateIndex // trigger update because the image has changed
             }
         }
         .store(in: &cancellables)
@@ -218,7 +220,7 @@ class TemplatesViewModel: ObservableObject {
     
     func mediumRoundedRectFrameHalfOpenDesignsDefaults() -> [ImageTemplate] {
         guard let template = TemplateDesign.mediumRoundedRectFrameHalfOpen.getLayers() else { return [] }
-        var index = 0
+        var index = 4
         let colorBackgroundTemplates = HexBackgroundColors.colors[6 ... 8].map { color in
             let imageTemplate = ImageTemplate(template: template,
                                               segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
@@ -273,7 +275,7 @@ class TemplatesViewModel: ObservableObject {
     }
 
     func frameCircleBrushHalfOpenDesignsDefaults() -> [ImageTemplate] {
-        var index = 0
+        var index = 4
         guard let template = TemplateDesign.frameCircleBrushHalfOpen.getLayers() else { return [] }
         let colorBackgroundTemplates = HexBackgroundColors.colors[2 ... 4].map { color in
             let imageTemplate = ImageTemplate(template: template, segmentationResult: Self.defaultSegmentationResults.circularElement(at: index))
