@@ -98,6 +98,11 @@ public class CanvasViewController: UIViewController {
             let template = self.templatesViewModel.templates[index]
             self.canvasView.removeAllSubviews()
             canvasView.addLayers(template.template, personImage: template.image)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                guard let newImage = template.image.withColorOverlay() else { return }
+                self.canvasView.removeAllSubviews()
+                self.canvasView.addLayers(template.template, personImage: newImage)
+            }
         }
         .store(in: &cancellables)
     }
