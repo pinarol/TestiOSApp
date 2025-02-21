@@ -17,6 +17,8 @@ struct ContentView: View {
             } onCancel: {
                 
             }
+            .background(Color.black)
+            .statusBarHidden(true)
             .ignoresSafeArea(.all)
         //}
         //.padding()
