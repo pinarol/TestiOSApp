@@ -5,7 +5,7 @@ extension UIImage {
         self.init(named: name, in: Bundle.module, compatibleWith: nil)
     }
 
-    func withColorOverlay(_ color: UIColor = UIColor.black.withAlphaComponent(0.4)) -> UIImage? {
+    func withColorOverlay(_ color: UIColor = UIColor.black.withAlphaComponent(0.8)) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
         guard let context = UIGraphicsGetCurrentContext(), self.cgImage != nil else { return nil }
 

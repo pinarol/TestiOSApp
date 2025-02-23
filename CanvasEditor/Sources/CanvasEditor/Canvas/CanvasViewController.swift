@@ -1,4 +1,5 @@
 import Combine
+import PhotosUI
 import SwiftUI
 import UIKit
 
@@ -7,7 +8,8 @@ enum Layer {
     static let image: String = SDKLocalizedString("Image layer", comment: "Name of the image layer in an image editor")
 }
 
-public class CanvasViewController: UIViewController {
+public class CanvasViewController: UIViewController, PHPickerViewControllerDelegate {
+    
     private let canvasView = MovableViewCanvas()
     private let canvasHoleView = UIView() // UIVisualEffectView()
     private var imageViews: [UIImageView] = []
@@ -52,6 +54,20 @@ public class CanvasViewController: UIViewController {
         return button
     }()
 
+    private lazy var selectImageButton: UIButton = {
+        let button = UIButton(type: .system)
+        var configuration = UIButton.Configuration.borderedProminent()
+        configuration.baseBackgroundColor = .black.withAlphaComponent(0.6)
+        configuration.imagePadding = 6
+        configuration.image = UIImage(systemName: "photo")
+        configuration.title = "Replace"
+
+        button.configuration = configuration
+        button.addTarget(self, action: #selector(selectImageButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
     public init(inputImage: UIImage?, onCompletion: ((UIImage) -> Void)?, onCancel: (() -> Void)?) {
         self.inputImage = inputImage
         self.onCancel = onCancel
@@ -89,6 +105,7 @@ public class CanvasViewController: UIViewController {
     func listenForUpdates() {
         personSegmentationModel.$currentSegmentationResult.sink { [weak self] segmentationResult in
             guard let self else { return }
+            self.templatesViewModel.originalImage = inputImage
             self.templatesViewModel.segmentationResult = segmentationResult
         }
         .store(in: &cancellables)
@@ -98,10 +115,15 @@ public class CanvasViewController: UIViewController {
             let template = self.templatesViewModel.templates[index]
             self.canvasView.removeAllSubviews()
             canvasView.addLayers(template.template, personImage: template.image)
+            self.selectImageButton.isHidden = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 guard let newImage = template.image.withColorOverlay() else { return }
                 self.canvasView.removeAllSubviews()
                 self.canvasView.addLayers(template.template, personImage: newImage)
+                // asdf
+                if self.selectImageButton.superview != nil {
+                    self.selectImageButton.isHidden = false
+                }
             }
         }
         .store(in: &cancellables)
@@ -111,6 +133,36 @@ public class CanvasViewController: UIViewController {
     @objc
     func cancelButtonTapped() {
         onCancel?()
+    }
+
+    @objc
+    func selectImageButtonTapped() {
+        let photoPickerViewController = makePhotosViewController()
+        present(photoPickerViewController, animated: true)
+    }
+
+    func makePhotosViewController() -> PHPickerViewController {
+        var config = PHPickerConfiguration()
+        config.filter = .images
+        config.selectionLimit = 1
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        return picker
+    }
+
+    public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard
+            let result = results.first,
+            result.itemProvider.canLoadObject(ofClass: UIImage.self)
+        else {
+            self.presentedViewController?.dismiss(animated: true)
+            return
+        }
+        Task {
+            let image = await result.itemProvider.loadUIImage()
+            self.inputImage = image
+            self.presentedViewController?.dismiss(animated: true)
+        }
     }
 
     @objc
@@ -164,6 +216,7 @@ public class CanvasViewController: UIViewController {
         view.addSubview(canvasHoleView)
         view.addSubview(cutoutButton)
         view.addSubview(templatesGridView)
+        view.addSubview(selectImageButton)
         canvasHoleView.translatesAutoresizingMaskIntoConstraints = false
         canvasView.translatesAutoresizingMaskIntoConstraints = false
         canvasView.layer.borderColor = UIColor.white.cgColor
@@ -194,6 +247,9 @@ public class CanvasViewController: UIViewController {
             templatesGridView.bottomAnchor.constraint(equalTo: canvasHoleView.safeLayoutGuide.bottomAnchor, constant: -50),
             templatesGridView.trailingAnchor.constraint(equalTo: canvasHoleView.trailingAnchor),
             templatesGridView.heightAnchor.constraint(lessThanOrEqualToConstant: 200),
+            
+            selectImageButton.centerXAnchor.constraint(equalTo: canvasView.centerXAnchor),
+            selectImageButton.centerYAnchor.constraint(equalTo: canvasView.centerYAnchor)
         ])
 
         canvasView.backgroundColor = UIColor.label.withAlphaComponent(0.1)
