@@ -8,11 +8,14 @@ struct ImageTemplate: Identifiable, Hashable {
     let isLoading: Bool
     let image: UIImage
 
-    init(id: String = UUID().uuidString, image: UIImage, template: CanvasLayers, isLoading: Bool) {
-        self.id = id
+    init(image: UIImage, template: CanvasLayers, isLoading: Bool) {
         self.template = template
         self.isLoading = isLoading
         self.image = image
+        var hasher = Hasher()
+        hasher.combine(template.hashValue)
+        hasher.combine(image.hashValue)
+        self.id = "\(hasher.finalize())"
     }
 
     init(template: CanvasLayers, segmentationResult: SegmentationResult) {
@@ -49,7 +52,7 @@ struct ImageTemplate: Identifiable, Hashable {
         return withUpdating(template: CanvasLayers(layers: newLayers))
     }
 
-    func withUpdatingPersonsPreviousLayer(with kind: CanvasLayer.Kind) -> ImageTemplate {
+    func withUpdatingPersonsPreviousLayer(with kind: CanvasLayer.Kind, id: String? = nil) -> ImageTemplate {
         guard let index = (template.layers.firstIndex { $0.type == .person }) else {
             return self
         }
@@ -57,7 +60,7 @@ struct ImageTemplate: Identifiable, Hashable {
         return withUpdatingLayer(atIndex: personPrevIndex, with: kind)
     }
 
-    func withUpdating(layerType: LayerType, with kind: CanvasLayer.Kind) -> ImageTemplate {
+    func withUpdating(layerType: LayerType, with kind: CanvasLayer.Kind, id: String? = nil) -> ImageTemplate {
         let newLayers = template.layers.map { layer in
             if layer.type == layerType {
                 layer.copyOverriding(kind: kind)
@@ -69,7 +72,7 @@ struct ImageTemplate: Identifiable, Hashable {
         return withUpdating(template: CanvasLayers(layers: newLayers))
     }
 
-    func withUpdating(id: String = UUID().uuidString, template newTemplate: CanvasLayers? = nil, isLoading newLoading: Bool? = nil) -> ImageTemplate {
-        ImageTemplate(id: id, image: image, template: newTemplate ?? template, isLoading: newLoading ?? isLoading)
+    func withUpdating(template newTemplate: CanvasLayers? = nil, isLoading newLoading: Bool? = nil) -> ImageTemplate {
+        ImageTemplate(image: image, template: newTemplate ?? template, isLoading: newLoading ?? isLoading)
     }
 }

@@ -9,7 +9,7 @@ struct ImageTemplatesHorizontalGrid: View {
                 ForEach(templatesViewModel.templates, id: \.self) { template in
                     Button {
                         if let index = templatesViewModel.templates.firstIndex(of: template) {
-                            templatesViewModel.selectedTemplateIndex = index
+                            templatesViewModel.selectedTemplate = templatesViewModel.templates[index]
                         }
                     } label: {
                         GridItemCanvasView(imageTemplate: template)
@@ -33,6 +33,6 @@ struct ImageTemplatesHorizontalGrid: View {
 
 #Preview {
     HStack {
-        ImageTemplatesHorizontalGrid(templatesViewModel: TemplatesViewModel(originalImage: UIImage()))
+        ImageTemplatesHorizontalGrid(templatesViewModel: TemplatesViewModel())
     }
 }

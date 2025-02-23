@@ -8,6 +8,7 @@ import Vision
 struct SegmentationResult {
     let resultImage: UIImage
     let croppedResultImage: UIImage
+    let originalImage: UIImage
 }
 
 protocol SegmentationResults {
@@ -63,12 +64,13 @@ struct PeopleSegmentationResults: SegmentationResults {
     }
 
     func generateSegmentedImage(baseImage: CIImage, selectedSegments: IndexSet) async -> SegmentationResult? {
+        guard let baseUIImage = baseImage.toUIImage(scale: scale, orientation: orientation) else { return nil }
         var maskImage = CIImage(cvPixelBuffer: segmentationMask)
         // Scale mask to image size.
         let scaleX = baseImage.extent.width / maskImage.extent.width
         let scaleY = baseImage.extent.height / maskImage.extent.height
         maskImage = maskImage.transformed(by: .init(scaleX: scaleX, y: scaleY))
-
+        
         let segmentedImage = isolateImageWithMask(image: baseImage, mask: maskImage)
 
         guard let cgImage = CIContext().createCGImage(segmentedImage, from: segmentedImage.extent) else {
@@ -76,7 +78,7 @@ struct PeopleSegmentationResults: SegmentationResults {
         }
         let image = UIImage(cgImage: cgImage, scale: scale, orientation: orientation)
 
-        return .init(resultImage: image, croppedResultImage: image.cropTransparent())
+        return .init(resultImage: image, croppedResultImage: image.cropTransparent(), originalImage: baseUIImage)
     }
 }
 
@@ -111,6 +113,7 @@ struct ForegroundPeopleSegmentation: SegmentationResults {
     }
 
     func generateSegmentedImage(baseImage: CIImage, selectedSegments: IndexSet) async -> SegmentationResult? {
+        guard let baseUIImage = baseImage.toUIImage(scale: scale, orientation: orientation) else { return nil }
         var maskImage = CIImage(cvPixelBuffer: segmentationMask)
         // Scale mask to image size.
         let scaleX = baseImage.extent.width / maskImage.extent.width
@@ -146,7 +149,7 @@ struct ForegroundPeopleSegmentation: SegmentationResults {
             return nil
         }
 
-        return .init(resultImage: resultImage, croppedResultImage: croppedResultImage)
+        return .init(resultImage: resultImage, croppedResultImage: croppedResultImage, originalImage: baseUIImage)
     }
 
     static func removeBackgroundPixels(
@@ -277,6 +280,8 @@ struct ForegroundInstanceMaskResult: SegmentationResults {
     }
 
     func generateSegmentedImage(baseImage: CIImage, selectedSegments: IndexSet) async -> SegmentationResult? {
+        guard let baseUIImage = baseImage.toUIImage(scale: scale, orientation: orientation) else { return nil }
+
         do {
             let maskedResultImageBuffer = try instanceMasks.generateMaskedImage(
                 ofInstances: instanceMasks.allInstances,
@@ -286,7 +291,7 @@ struct ForegroundInstanceMaskResult: SegmentationResults {
             let maskedResultImage = CIImage(cvPixelBuffer: maskedResultImageBuffer)
             if let cgImage = CIContext().createCGImage(maskedResultImage, from: maskedResultImage.extent) {
                 let image = UIImage(cgImage: cgImage, scale: scale, orientation: orientation)
-                return .init(resultImage: image, croppedResultImage: image.cropTransparent())
+                return .init(resultImage: image, croppedResultImage: image.cropTransparent(), originalImage: baseUIImage)
             }
         } catch {
             print("Error generating mask: \(error).")
@@ -305,6 +310,17 @@ extension CVPixelBuffer {
         if let cgImage = CIContext().createCGImage(maskedResultImage, from: maskedResultImage.extent) {
             let image = UIImage(cgImage: cgImage, scale: scale, orientation: orientation)
             return image
+        }
+        return nil
+    }
+}
+
+extension CIImage {
+
+    func toUIImage(scale: CGFloat, orientation: UIImage.Orientation) -> UIImage? {
+        let context = CIContext()
+        if let cgImage = context.createCGImage(self, from: self.extent) {
+            return UIImage(cgImage: cgImage, scale: scale, orientation: orientation)
         }
         return nil
     }

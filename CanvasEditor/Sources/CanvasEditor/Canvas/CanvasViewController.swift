@@ -14,7 +14,7 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
     private let canvasHoleView = UIView() // UIVisualEffectView()
     private var imageViews: [UIImageView] = []
     private lazy var personSegmentationModel = PersonSegmentationModel()
-    private lazy var templatesViewModel = TemplatesViewModel(originalImage: inputImage)
+    private lazy var templatesViewModel = TemplatesViewModel()
 
     var inputImage: UIImage? {
         didSet {
@@ -104,23 +104,29 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
 
     func listenForUpdates() {
         personSegmentationModel.$currentSegmentationResult.sink { [weak self] segmentationResult in
-            guard let self else { return }
-            self.templatesViewModel.originalImage = inputImage
+            guard let self, let segmentationResult else { return }
             self.templatesViewModel.segmentationResult = segmentationResult
+            if let selectedTemplate = self.templatesViewModel.selectedTemplate {
+                let newTemplate = ImageTemplate(template: selectedTemplate.template, segmentationResult: segmentationResult)
+                self.canvasView.removeAllSubviews()
+                canvasView.addLayers(newTemplate.template, personImage: newTemplate.image)
+                self.selectImageButton.isHidden = true
+            }
         }
         .store(in: &cancellables)
 
-        templatesViewModel.$selectedTemplateIndex.sink { [weak self] index in
-            guard let self, index < self.templatesViewModel.templates.count else { return }
-            let template = self.templatesViewModel.templates[index]
+        templatesViewModel.$selectedTemplate.sink { [weak self] selectedTemplate in
+            guard let self, let selectedTemplate else { return }
+            let template = selectedTemplate
             self.canvasView.removeAllSubviews()
             canvasView.addLayers(template.template, personImage: template.image)
             self.selectImageButton.isHidden = true
+            let isPersonPlaceholder = template.template.personLayer?.isPlaceholder
+            guard isPersonPlaceholder == true else { return }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 guard let newImage = template.image.withColorOverlay() else { return }
                 self.canvasView.removeAllSubviews()
                 self.canvasView.addLayers(template.template, personImage: newImage)
-                // asdf
                 if self.selectImageButton.superview != nil {
                     self.selectImageButton.isHidden = false
                 }
