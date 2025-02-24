@@ -31,15 +31,20 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
 
     private lazy var cancelButton: UIButton = {
         let cancelButton = UIButton(type: .system)
-        cancelButton.setTitle("Cancel", for: .normal)
+        var configuration = UIButton.Configuration.plain()
+        configuration.title = "Cancel"
+        cancelButton.configuration = configuration
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.isHidden = true // TODO remove `hidden = true
         return cancelButton
     }()
 
     private lazy var doneButton: UIButton = {
         let doneButton = UIButton(type: .system)
-        doneButton.setTitle("Done", for: .normal)
+        var configuration = UIButton.Configuration.filled()
+        configuration.title = "Done"
+        doneButton.configuration = configuration
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         return doneButton
@@ -50,6 +55,14 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
         button.setTitle("Cutout", for: .normal)
         button.setImage(UIImage(systemName: "scissors"), for: .normal)
         button.addTarget(self, action: #selector(cutoutButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var photoLibraryButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "photo"), for: .normal)
+        button.addTarget(self, action: #selector(selectImageButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -221,6 +234,7 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
         view.addSubview(canvasView)
         view.addSubview(canvasHoleView)
         view.addSubview(cutoutButton)
+        view.addSubview(photoLibraryButton)
         view.addSubview(templatesGridView)
         view.addSubview(selectImageButton)
         canvasHoleView.translatesAutoresizingMaskIntoConstraints = false
@@ -245,8 +259,12 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
             // Done button - Right of the screen, within safe area
             doneButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             doneButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+
             cutoutButton.leadingAnchor.constraint(equalTo: canvasView.leadingAnchor),
             cutoutButton.topAnchor.constraint(equalTo: canvasView.bottomAnchor, constant: 12),
+
+            photoLibraryButton.trailingAnchor.constraint(equalTo: canvasView.trailingAnchor),
+            photoLibraryButton.topAnchor.constraint(equalTo: canvasView.bottomAnchor, constant: 12),
 
             // templatesGridView
             templatesGridView.leadingAnchor.constraint(equalTo: canvasHoleView.leadingAnchor),
