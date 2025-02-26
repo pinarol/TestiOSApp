@@ -87,11 +87,25 @@
 			);
 			target = 915416872D632CCE00E72223 /* Gravatar App Clip */;
 		};
+		91726B242D6F123900B8255C /* Exceptions for "TestiOSApp" folder in "Gravatar App Clip" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				"Bundle+Additions.swift",
+				CanvasEditorViewWrapper.swift,
+				ImageResultView.swift,
+				Secrets.swift,
+			);
+			target = 915416872D632CCE00E72223 /* Gravatar App Clip */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		915416592D62389600E72223 /* TestiOSApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				91726B242D6F123900B8255C /* Exceptions for "TestiOSApp" folder in "Gravatar App Clip" target */,
+			);
 			path = TestiOSApp;
 			sourceTree = "<group>";
 		};

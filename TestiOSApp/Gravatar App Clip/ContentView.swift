@@ -11,13 +11,7 @@ struct ContentView: View {
     @EnvironmentObject private var model: Model
 
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, app clip!")
-        }
-        .padding()
+        CanvasEditorViewWrapper()
     }
 }
 

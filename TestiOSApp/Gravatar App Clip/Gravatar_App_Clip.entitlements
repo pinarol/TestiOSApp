@@ -6,6 +6,7 @@
 	<array>
 		<string>webcredentials:pinarslightsaildomain.com</string>
 		<string>appclips:pinarslightsaildomain.com</string>
+		<string>applinks:pinarslightsaildomain.com</string>
 	</array>
 	<key>com.apple.developer.parent-application-identifiers</key>
 	<array>

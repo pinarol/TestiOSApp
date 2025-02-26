@@ -52,8 +52,7 @@ struct ImageResultView: View {
                         .foregroundStyle(.thickMaterial)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 12)
