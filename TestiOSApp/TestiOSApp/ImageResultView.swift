@@ -4,14 +4,16 @@ import GravatarUI
 
 struct ImageResultView: View {
     let image: UIImage
+    @State var isGravatarQEPresented: Bool = false
+    let email: String = "pinarolguc@gmail.com"
     
     var body: some View {
         VStack(spacing: 8) {
             Image(uiImage: image)
                 .resizable()
                 .frame(width: 300, height: 300)
-          //  ScrollView {
-                VStack(alignment: .leading) {
+            VStack(alignment: .leading) {
+                ScrollView {
                     menuButton(
                         icon: {
                             Image(uiImage: UIImage(named: "gravatar")!.withRenderingMode(.alwaysTemplate))
@@ -21,10 +23,11 @@ struct ImageResultView: View {
                         },
                         title: "Save to Gravatar",
                         action: {
+                            
+                            isGravatarQEPresented = true
                             print("")
                         }
                     )
-                    
                     menuButton(
                         icon: {
                             Image(uiImage: UIImage(named: "apple-photos")!)
@@ -37,11 +40,10 @@ struct ImageResultView: View {
                         }
                     )
                 }
-        //    }
+                
+            }
             .padding(.top, 24)
-          
             Spacer()
-            
             VStack {
                 VStack(alignment: .leading) {
                     Text("Want to access more avatar designs?")
@@ -50,13 +52,13 @@ struct ImageResultView: View {
                         .foregroundStyle(.thickMaterial)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        
-
+                    
+                    
                 }
-                .padding(.horizontal, 12)
+                .padding(.horizontal, 24)
                 .padding(.top, 12)
                 .padding(.bottom, 16)
-
+                
                 VStack(alignment: .leading)  {
                     Text("Get the full app")
                         .font(.callout.weight(.semibold))
@@ -68,9 +70,9 @@ struct ImageResultView: View {
                             .resizable()
                             .frame(width: 52, height: 52)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
-
+                        
                         VStack(alignment: .leading, spacing: 0) {
-                            HStack {
+                            HStack(spacing: 3) {
                                 Image(uiImage: UIImage(named: "appstore")!.withRenderingMode(.alwaysTemplate))
                                     .resizable()
                                     .frame(width: 16, height: 16)
@@ -88,8 +90,6 @@ struct ImageResultView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                                 .font(.footnote)
                                 .foregroundColor(Color(uiColor: .secondaryLabel))
-
-
                         }
                         Spacer()
                         Button {
@@ -101,36 +101,40 @@ struct ImageResultView: View {
                                 .font(Font.system(size: 18, weight: .bold, design: .default))
                                 .foregroundColor(Color(.white))
                                 .clipShape(RoundedRectangle(cornerRadius: 16))
-
                         }
-
                     }
                     .padding(.vertical, 4)
                 }
-
                 .padding(.horizontal, 12)
                 .padding(.vertical, 12)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color(UIColor.systemBackground).opacity(1))
-
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .padding(.horizontal, 12)
-                .shadow(radius: 12)
-
-
-                //
                 
-
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .padding(.horizontal, 16)
+                .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.15), radius: 20)
             }
-            
             .background(Color(UIColor.secondarySystemBackground).opacity(1))
-           
         }
         .padding(.top, 24)
-        
-      //
         .navigationTitle("Save")
+        .toolbar {
+            if OAuthSession.hasSession(with: .init(email)) {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Logout") {
+                        OAuthSession.deleteSession(with: .init(email))
+                    }
+                }
+            }
+        }
         .navigationBarTitleDisplayMode(.inline)
+        .gravatarQuickEditorSheet(
+            isPresented: $isGravatarQEPresented,
+            email: email,
+            scope: QuickEditorScope.avatarPicker(.horizontalInstrinsicHeight),
+            imageToUpload: image
+        )
+        .background(Color(UIColor.systemGroupedBackground))
     }
     
     func menuButton(icon: () -> some View, title: String, action: @escaping () -> Void) -> some View {
