@@ -6,6 +6,8 @@ struct ImageResultView: View {
     let image: UIImage
     @State var isGravatarQEPresented: Bool = false
     let email: String = "pinarolguc@gmail.com"
+    @State var logoutButtonID: String = ""
+    @State var showFullAppAlert: Bool = false
     
     var body: some View {
         VStack(spacing: 8) {
@@ -23,9 +25,7 @@ struct ImageResultView: View {
                         },
                         title: "Save to Gravatar",
                         action: {
-                            
                             isGravatarQEPresented = true
-                            print("")
                         }
                     )
                     menuButton(
@@ -36,7 +36,7 @@ struct ImageResultView: View {
                         },
                         title: "Save to camera roll",
                         action: {
-                            
+                            showFullAppAlert = true
                         }
                     )
                 }
@@ -92,6 +92,7 @@ struct ImageResultView: View {
                         }
                         Spacer()
                         Button {
+                            openFullApp()
                         } label: {
                             Text("GET")
                                 .padding(.vertical, 4)
@@ -113,16 +114,20 @@ struct ImageResultView: View {
                 .padding(.horizontal, 16)
                 .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.15), radius: 20)
             }
+            .padding(.bottom, 8)
             .background(Color(UIColor.secondarySystemBackground).opacity(1))
         }
+
         .padding(.top, 24)
         .navigationTitle("Save")
         .toolbar {
-            if OAuthSession.hasSession(with: .init(email)) {
-                ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if OAuthSession.hasSession(with: .init(email)) {
                     Button("Logout") {
                         OAuthSession.deleteSession(with: .init(email))
+                        logoutButtonID = UUID().uuidString
                     }
+                    .id(logoutButtonID)
                 }
             }
         }
@@ -133,9 +138,25 @@ struct ImageResultView: View {
             scope: QuickEditorScope.avatarPicker(.horizontalInstrinsicHeight),
             imageToUpload: image
         )
-        .background(Color(UIColor.systemGroupedBackground))
+        .alert(isPresented: $showFullAppAlert) {
+            Alert(
+                title: Text("Get the Full App"),
+                message: Text("Unlock all features by downloading the full app."),
+                primaryButton: .default(Text("Get the App")) {
+                    //openFullApp()
+                    openFullApp()
+                    showFullAppAlert = false
+                },
+                secondaryButton: .cancel()
+            )
+        }
+        .preferredColorScheme(.dark)
     }
-    
+    func openFullApp() {
+        if let url = URL(string: "https://apps.apple.com/app/idYOUR_APP_ID") {
+            UIApplication.shared.open(url)
+        }
+    }
     func menuButton(icon: () -> some View, title: String, action: @escaping () -> Void) -> some View {
         Button {
             action()
