@@ -215,12 +215,10 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
     private func setupUI() {
         cutoutButton.isHidden = inputImage == nil
 
-        let hostingController = GridHostingViewController(swiftUIView: ImageTemplatesHorizontalGrid(templatesViewModel: templatesViewModel))
+        let hostingController = UIHostingController(rootView: ImageTemplatesHorizontalGrid(templatesViewModel: templatesViewModel))
         addChild(hostingController)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         let templatesGridView = hostingController.view!
-
-        // templatesGridView.isUserInteractionEnabled = false
 
         view.addSubview(cancelButton)
         view.addSubview(doneButton)
@@ -285,9 +283,6 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
         view.bringSubviewToFront(cutoutButton)
         view.bringSubviewToFront(templatesGridView)
 
-        // Add gesture recognizer for image addition
-        // let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addImage))
-        //  canvasView.addGestureRecognizer(tapGesture)
         hostingController.didMove(toParent: self)
     }
 
@@ -306,68 +301,5 @@ public class CanvasViewController: UIViewController, PHPickerViewControllerDeleg
         maskLayer.fillRule = .evenOdd
 
         canvasHoleView.layer.mask = maskLayer
-    }
-}
-
-class GridHostingViewController: UIViewController {
-    let swiftUIView: ImageTemplatesHorizontalGrid
-
-    init(swiftUIView: ImageTemplatesHorizontalGrid) {
-        self.swiftUIView = swiftUIView
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let hostingController = UIHostingController(rootView: swiftUIView)
-
-        // Use the custom SwiftUIContainerView
-        let containerView = SwiftUIContainerView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerView)
-
-        // Add UIHostingController's view inside the container
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(hostingController.view)
-
-        NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: view.topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
-            hostingController.view.topAnchor.constraint(equalTo: containerView.topAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-        ])
-
-        hostingController.didMove(toParent: self)
-    }
-}
-
-class SwiftUIContainerView: UIView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.isUserInteractionEnabled = true // ✅ Ensure it receives touches
-        self.backgroundColor = .clear // ✅ Transparent but still interactive
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let hitView = super.hitTest(point, with: event)
-
-        // If touch lands on this container, return nil so it passes to subviews (SwiftUI)
-        return hitView == self ? nil : hitView
     }
 }
