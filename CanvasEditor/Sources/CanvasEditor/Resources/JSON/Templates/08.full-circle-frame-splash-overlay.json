@@ -11,23 +11,17 @@
                 "height": 1
             },
             "position": {
-                "center": {
-                    "x": 0.5,
-                    "y": 0.5
-                }
+                "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
             }
         },
         {
             "type": "person",
             "cropped": true,
             "intrinsic_size": {
-                "ratio": 0.9
+                "ratio": 1
             },
             "position": {
-                "center": {
-                    "x": 0.5,
-                    "y": 0.5
-                }
+                "relative": {"vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}}
             }
         },
         {
@@ -41,10 +35,7 @@
                 "height": 1
             },
             "position": {
-                "center": {
-                    "x": 0.5,
-                    "y": 0.5
-                }
+                "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
             },
             "mask_layers": [
                 {
@@ -54,10 +45,7 @@
                         "height": 1
                     },
                     "position": {
-                        "origin": {
-                            "x": 0,
-                            "y": 0
-                        }
+                        "relative": {"vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}}
                     },
                     "blend_mode": "normal"
                 },
@@ -68,10 +56,7 @@
                         "height": 1
                     },
                     "position": {
-                        "center": {
-                            "x": 0.5,
-                            "y": 0.5
-                        }
+                        "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
                     },
                     "blend_mode": "clear"
                 }
@@ -88,10 +73,7 @@
                 "height": 1
             },
             "position": {
-                "center": {
-                    "x": 0.5,
-                    "y": 0.5
-                }
+                "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
             },
             "mask_layers": [
                 {
@@ -101,10 +83,7 @@
                         "height": 1
                     },
                     "position": {
-                        "origin": {
-                            "x": 0,
-                            "y": 0
-                        }
+                        "relative": {"vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}}
                     },
                     "blend_mode": "clear"
                 },
@@ -116,10 +95,7 @@
                         "height": 1
                     },
                     "position": {
-                        "center": {
-                            "x": 0.5,
-                            "y": 0.5
-                        }
+                        "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
                     },
                     "blend_mode": "normal"
                 }

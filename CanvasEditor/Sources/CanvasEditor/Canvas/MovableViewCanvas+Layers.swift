@@ -8,8 +8,8 @@ extension MovableViewCanvas {
                 let imageView = StylableImageView(id: layer.id, image: personImage)
                 imageView.contentMode = .scaleAspectFit
                 let aspectRatio = personImage.size.width / personImage.size.height
-                let location = layer.position.cgCenterPosition(in: bounds)
                 let size = layer.sizeType.cgSize(in: bounds, aspectRatio: aspectRatio, isCropped: layer.isCropped)
+                let location = layer.position.cgCenterPosition(in: bounds, ofChildWithSize: size)
                 addView(
                     view: imageView,
                     transformations: ViewTransformations(),
@@ -26,8 +26,8 @@ extension MovableViewCanvas {
     func addView(
         layer: CanvasLayer
     ) {
-        let location = layer.position.cgCenterPosition(in: bounds)
         let size = layer.sizeType.cgSize(in: bounds, aspectRatio: 1, isCropped: layer.isCropped)
+        let location = layer.position.cgCenterPosition(in: bounds, ofChildWithSize: size)
 
         let imageView = StylableImageView(id: layer.id, image: nil)
         imageView.contentMode = .scaleAspectFit
@@ -104,15 +104,16 @@ extension CanvasLayer: Identifiable {
 
         for maskLayer in maskLayers {
             let size = maskLayer.size
+            let cgSize = size.cgSize(in: bounds)
             let position = maskLayer.position
-            let maskRect = CGRect(origin: position.cgOriginPosition(in: bounds), size: size.cgSize(in: bounds))
+            let maskRect = CGRect(origin: position.cgOriginPosition(in: bounds, ofChildWithSize: cgSize), size: cgSize)
 
             ctx.setBlendMode(maskLayer.blendMode.cgBlendMode)
 
             switch maskLayer.kind {
             case .circle:
                 let bezierPath = UIBezierPath(
-                    arcCenter: position.cgCenterPosition(in: bounds),
+                    arcCenter: position.cgCenterPosition(in: bounds, ofChildWithSize: maskRect.size),
                     radius: maskRect.width / 2,
                     startAngle: 0,
                     endAngle: CGFloat.pi * 2,
@@ -153,7 +154,7 @@ extension CanvasLayer: Identifiable {
 
             // ctx.fillPath() ?
             case .roundedRectangle(let cornerRadii, let roundCorners):
-                let centerPoint = position.cgCenterPosition(in: bounds)
+                let centerPoint = position.cgCenterPosition(in: bounds, ofChildWithSize: maskRect.size)
                 let size = size.cgSize(in: bounds)
                 let originX = centerPoint.x - (size.width * 0.5)
                 let originyY = centerPoint.y - (size.height * 0.5)
@@ -212,7 +213,7 @@ extension CanvasLayer.SizeType {
 }
 
 extension Position {
-    func cgCenterPosition(in bounds: CGRect) -> CGPoint {
+    func cgCenterPosition(in bounds: CGRect, ofChildWithSize size: CGSize) -> CGPoint {
         switch kind {
         case .center(let point):
             return point.cgPoint(in: bounds)
@@ -221,10 +222,12 @@ extension Position {
             let x = cgPoint.x + (bounds.width * 0.5)
             let y = cgPoint.y + (bounds.height * 0.5)
             return CGPoint(x: x, y: y)
+        case .relative(let alignment):
+            return alignment.cgCenterPosition(in: bounds, ofChildWithSize: size)
         }
     }
 
-    func cgOriginPosition(in bounds: CGRect) -> CGPoint {
+    func cgOriginPosition(in bounds: CGRect, ofChildWithSize size: CGSize) -> CGPoint {
         switch kind {
         case .center(let point):
             let cgPoint = point.cgPoint(in: bounds)
@@ -233,10 +236,74 @@ extension Position {
             return CGPoint(x: x, y: y)
         case .origin(let point):
             return point.cgPoint(in: bounds)
+        case .relative(let alignment):
+            return alignment.cgOriginPosition(in: bounds, ofChildWithSize: size)
         }
     }
 }
 
+extension CanvasEditor.Alignment {
+    func cgCenterPosition(in bounds: CGRect, ofChildWithSize size: CGSize) -> CGPoint {
+        let horizontalAlignment = self.horizontal
+        
+        var x: CGFloat = 0
+        switch horizontalAlignment.alignment {
+        case .center:
+            x = bounds.width / 2
+        case .left:
+            x = size.width / 2
+        case .right:
+            let childOriginX = bounds.width - size.width
+            // center X of the child view is its origin plus half of its width
+            x = childOriginX + (size.width / 2)
+        }
+        x = (horizontalAlignment.offset * bounds.width) + x
+        let verticalAlignment = self.vertical
+        var y: CGFloat = 0
+
+        switch verticalAlignment.alignment {
+        case .top:
+            y = size.height / 2
+        case .center:
+            y = bounds.height / 2
+        case .bottom:
+            let childOriginY = bounds.height - size.height
+            // center Y of the child view is its origin plus half of its height
+            y = childOriginY + (size.height / 2)
+        }
+        y = (verticalAlignment.offset * bounds.height) + y
+        return CGPoint(x: x, y: y)
+    }
+
+    func cgOriginPosition(in bounds: CGRect, ofChildWithSize size: CGSize) -> CGPoint {
+        let horizontalAlignment = self.horizontal
+        var x: CGFloat = 0
+        switch horizontalAlignment.alignment {
+        case .center:
+            x = (bounds.width - size.width) / 2
+        case .left:
+            x = 0
+        case .right:
+            x = bounds.width - size.width
+        }
+        x = (horizontalAlignment.offset * bounds.width) + x
+
+        let verticalAlignment = self.vertical
+        var y: CGFloat = 0
+
+        switch verticalAlignment.alignment {
+        case .top:
+            y = 0
+        case .center:
+            y = (bounds.height - size.height) / 2
+        case .bottom:
+            y = bounds.height - size.height
+        }
+        y = (verticalAlignment.offset * bounds.height) + y
+        return CGPoint(x: x, y: y)
+    }
+
+}
 extension Size2D {
     func cgSize(in bounds: CGRect) -> CGSize {
         CGSize(width: bounds.width * CGFloat(width), height: bounds.height * CGFloat(height))
