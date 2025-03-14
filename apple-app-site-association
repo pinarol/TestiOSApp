@@ -1,0 +1,40 @@
+{
+    "applinks": {
+        "apps": [
+            "SH63W6PH4B.com.pinar.test.TestiOSApp",
+            "SH63W6PH4B.com.pinar.test.TestiOSApp.Clip"
+        ],
+        "details": [
+            {
+                "appIDs": [
+                    "SH63W6PH4B.com.pinar.test.TestiOSApp",
+                    "SH63W6PH4B.com.pinar.test.TestiOSApp.Clip"
+                ],
+                "components": [
+                    {
+                        "/": "/avatar/*"
+                    },
+                    {
+                        "/": "/iosdemo/oauth/callback"
+                    }
+                ]
+            }
+        ]
+    },
+    "appclips": {
+        "apps": [
+            "SH63W6PH4B.com.pinar.test.TestiOSApp.Clip"
+        ]
+    },
+    "webcredentials": {
+        "apps": [
+            "SH63W6PH4B.com.pinar.test.TestiOSApp",
+            "SH63W6PH4B.com.pinar.test.TestiOSApp.Clip"
+        ]
+    },
+    "activitycontinuation": {
+        "apps": [
+            "SH63W6PH4B.com.pinar.test.TestiOSApp"
+        ]
+    }
+}

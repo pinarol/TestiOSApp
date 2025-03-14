@@ -5,14 +5,14 @@
       "color": {"hex": "F29BA2", "alpha": 1},
       "size": {"width": 1, "height": 1},
       "position": {
-          "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+          "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
       }
     },
     {
       "type": "person",
       "intrinsic_size": {"ratio": 1},
       "position": {
-          "relative": {"vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}}
+          "vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}
       },
       "cropped": true
     },
@@ -21,14 +21,14 @@
       "color": {"hex": "FFFFFF", "alpha": 1},
       "size": {"width": 1, "height": 1},
       "position": {
-          "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+          "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
       },
       "mask_layers" : [
         {
           "type": "rectangle",
           "size": {"width": 1, "height": 1},
           "position": {
-            "relative": {"vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}},
+            "vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"},
           },
           "blend_mode": "normal"
         },
@@ -36,7 +36,7 @@
           "type": "circle",
           "size": {"width": 1, "height": 1},
           "position": {
-            "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}},
+            "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"},
           },
           "blend_mode": "clear"
         }

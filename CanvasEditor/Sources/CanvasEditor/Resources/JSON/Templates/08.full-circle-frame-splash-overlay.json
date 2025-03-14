@@ -11,7 +11,7 @@
                 "height": 1
             },
             "position": {
-                "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+                "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
             }
         },
         {
@@ -21,7 +21,7 @@
                 "ratio": 1
             },
             "position": {
-                "relative": {"vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}}
+                "vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}
             }
         },
         {
@@ -35,7 +35,7 @@
                 "height": 1
             },
             "position": {
-                "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+                "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
             },
             "mask_layers": [
                 {
@@ -45,7 +45,7 @@
                         "height": 1
                     },
                     "position": {
-                        "relative": {"vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}}
+                        "vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}
                     },
                     "blend_mode": "normal"
                 },
@@ -56,7 +56,7 @@
                         "height": 1
                     },
                     "position": {
-                        "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+                        "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
                     },
                     "blend_mode": "clear"
                 }
@@ -73,7 +73,7 @@
                 "height": 1
             },
             "position": {
-                "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+                "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
             },
             "mask_layers": [
                 {
@@ -83,7 +83,7 @@
                         "height": 1
                     },
                     "position": {
-                        "relative": {"vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}}
+                        "vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}
                     },
                     "blend_mode": "clear"
                 },
@@ -95,7 +95,7 @@
                         "height": 1
                     },
                     "position": {
-                        "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+                        "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
                     },
                     "blend_mode": "normal"
                 }

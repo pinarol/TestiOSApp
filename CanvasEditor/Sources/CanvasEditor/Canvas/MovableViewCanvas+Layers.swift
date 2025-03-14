@@ -212,37 +212,7 @@ extension CanvasLayer.SizeType {
     }
 }
 
-extension Position {
-    func cgCenterPosition(in bounds: CGRect, ofChildWithSize size: CGSize) -> CGPoint {
-        switch kind {
-        case .center(let point):
-            return point.cgPoint(in: bounds)
-        case .origin(let point):
-            let cgPoint = point.cgPoint(in: bounds)
-            let x = cgPoint.x + (bounds.width * 0.5)
-            let y = cgPoint.y + (bounds.height * 0.5)
-            return CGPoint(x: x, y: y)
-        case .relative(let alignment):
-            return alignment.cgCenterPosition(in: bounds, ofChildWithSize: size)
-        }
-    }
-
-    func cgOriginPosition(in bounds: CGRect, ofChildWithSize size: CGSize) -> CGPoint {
-        switch kind {
-        case .center(let point):
-            let cgPoint = point.cgPoint(in: bounds)
-            let x = cgPoint.x - (bounds.width * 0.5)
-            let y = cgPoint.y - (bounds.height * 0.5)
-            return CGPoint(x: x, y: y)
-        case .origin(let point):
-            return point.cgPoint(in: bounds)
-        case .relative(let alignment):
-            return alignment.cgOriginPosition(in: bounds, ofChildWithSize: size)
-        }
-    }
-}
-
-extension CanvasEditor.Alignment {
+extension CanvasEditor.Position {
     func cgCenterPosition(in bounds: CGRect, ofChildWithSize size: CGSize) -> CGPoint {
         let horizontalAlignment = self.horizontal
         

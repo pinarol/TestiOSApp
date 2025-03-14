@@ -5,14 +5,14 @@
       "color": {"hex": "F29BA2", "alpha": 1},
       "size": {"width": 1, "height": 1},
       "position": {
-        "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+        "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
       }
     },
     {
       "type": "person",
       "intrinsic_size": {"ratio": 1},
       "position": {
-          "relative": {"vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}}
+          "vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}
       },
       "cropped": false
     }

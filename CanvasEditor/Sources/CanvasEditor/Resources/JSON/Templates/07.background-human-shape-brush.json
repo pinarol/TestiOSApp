@@ -5,7 +5,7 @@
       "color": {"hex": "FFFFFF", "alpha": 1},
       "size": {"width": 1, "height": 1},
       "position": {
-        "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+        "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
       }
     },
     {
@@ -13,14 +13,14 @@
       "color": {"hex": "FFFFFF", "alpha": 1},
       "size": {"width": 1, "height": 1},
       "position": {
-        "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+        "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
       },
       "mask_layers" : [
         {
           "type": "rectangle",
           "size": {"width": 1, "height": 1},
           "position": {
-            "relative": {"vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}}
+            "vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"}
           },
           "blend_mode": "clear"
         },
@@ -29,7 +29,7 @@
           "image_name": "frame-human-shape-brush.png",
           "size": {"width": 1, "height": 1},
           "position": {
-            "relative": {"vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}}
+            "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
           },
           "blend_mode": "normal"
         }
@@ -40,7 +40,7 @@
       "intrinsic_size": {"ratio": 1},
       "cropped": true,
       "position": {
-          "relative": {"vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}}
+          "vertical": {"alignment" : "bottom"}, "horizontal": {"alignment" : "center"}
       }
     }
   ]
