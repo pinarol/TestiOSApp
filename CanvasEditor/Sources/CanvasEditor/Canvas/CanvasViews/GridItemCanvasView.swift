@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 struct GridItemCanvasView: UIViewRepresentable {
-    static let length: CGFloat = 125
+    static let length: CGFloat = 126
 
     var imageTemplate: ImageTemplate
 
