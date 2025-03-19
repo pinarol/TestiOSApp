@@ -5,8 +5,9 @@
       "color": {"hex": "F29BA2", "alpha": 1},
       "size": {"width": 1, "height": 1},
       "position": {
-          "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"}
-      }
+          "vertical": {"alignment" : "center"},
+          "horizontal": {"alignment" : "center"}
+      },
     },
     {
       "type": "person",
@@ -28,7 +29,7 @@
           "type": "rectangle",
           "size": {"width": 1, "height": 1},
           "position": {
-            "vertical": {"alignment" : "top"}, "horizontal": {"alignment" : "left"},
+            "vertical": {"alignment" : "center"}, "horizontal": {"alignment" : "center"},
           },
           "blend_mode": "normal"
         },
