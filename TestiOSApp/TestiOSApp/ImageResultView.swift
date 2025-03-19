@@ -5,10 +5,11 @@ import GravatarUI
 struct ImageResultView: View {
     let image: UIImage
     @State var isGravatarQEPresented: Bool = false
-    let email: String = "pinarolguc@gmail.com"
+    @State private var isPresentingEmailModal = false
+    @AppStorage("gravatarEmail") private var email: String = ""
     @State var logoutButtonID: String = ""
     @State var showFullAppAlert: Bool = false
-    
+
     var body: some View {
         VStack(spacing: 8) {
             Image(uiImage: image)
@@ -25,7 +26,12 @@ struct ImageResultView: View {
                         },
                         title: "Save to Gravatar",
                         action: {
-                            isGravatarQEPresented = true
+                            if !email.isEmpty {
+                                isGravatarQEPresented = true
+                            }
+                            else {
+                                isPresentingEmailModal = true
+                            }
                         }
                     )
                     menuButton(
@@ -122,12 +128,20 @@ struct ImageResultView: View {
         .navigationTitle("Save")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                if OAuthSession.hasSession(with: .init(email)) {
-                    Button("Logout") {
-                        OAuthSession.deleteSession(with: .init(email))
-                        logoutButtonID = UUID().uuidString
+                VStack(spacing: 0) {
+                    Button(email.isEmpty ? "Email" : email) {
+                        isPresentingEmailModal = true
                     }
-                    .id(logoutButtonID)
+                    .font(.caption)
+                    if OAuthSession.hasSession(with: .init(email)) {
+                        Button("Logout") {
+                            OAuthSession.deleteSession(with: .init(email))
+                            email = ""
+                            logoutButtonID = UUID().uuidString
+                        }
+                        .font(.callout)
+                        .id(logoutButtonID)
+                    }
                 }
             }
         }
@@ -138,6 +152,14 @@ struct ImageResultView: View {
             scope: QuickEditorScope.avatarPicker(.horizontalInstrinsicHeight),
             imageToUpload: image
         )
+        .sheet(isPresented: $isPresentingEmailModal) {
+            EmailInputView(email: $email, isPresented: $isPresentingEmailModal) {
+                if !email.isEmpty {
+                    isGravatarQEPresented = true
+                }
+            }
+            .presentationDetents([.medium])
+        }
         .alert(isPresented: $showFullAppAlert) {
             Alert(
                 title: Text("Get the Full App"),
@@ -178,7 +200,9 @@ struct ImageResultView: View {
 }
 
 #Preview {
-    ImageResultView(image: UIImage(named: "avatar-sample")!)
+    NavigationView {
+        ImageResultView(image: UIImage(named: "avatar-sample")!)
+    }
 }
 
 extension UIColor {
@@ -186,5 +210,37 @@ extension UIColor {
     
     static func rgba(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, alpha: CGFloat = 1.0) -> UIColor {
         UIColor(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+    }
+}
+
+
+struct EmailInputView: View {
+    @Binding var email: String
+    @Binding var isPresented: Bool
+    let onDone: (() -> Void)?
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                TextField("Enter your email", text: $email)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
+                    .padding()
+
+                Button("Submit") {
+                    isPresented = false  // Dismiss modal
+                    onDone?()
+                }
+                .padding()
+                .buttonStyle(.borderedProminent)
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Email Input")
+            .navigationBarItems(trailing: Button("Cancel") {
+                isPresented = false
+            })
+        }
     }
 }
